@@ -84,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             SizedBox(
-              height: Get.height * 0.02,
+              height: Get.height * 0.01,
             ),
             _buildTrendingList()
           ],

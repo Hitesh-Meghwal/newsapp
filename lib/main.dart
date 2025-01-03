@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'News App',
+      defaultTransition: Transition.cupertino,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primaryColor),
         useMaterial3: true,
@@ -56,7 +57,7 @@ class MyApp extends StatelessWidget {
             titleTextStyle: Theme.of(context).textTheme.headlineMedium),
       ),
       getPages: AppRoutes.routes,
-      initialRoute: AppRoutes.homeScreen,
+      initialRoute: AppRoutes.landingScreen,
       debugShowCheckedModeBanner: false,
     );
   }
