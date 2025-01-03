@@ -42,8 +42,7 @@ class HomeController extends GetxController {
       if (response != null) {
         // Filter and map the articles
         _articles.value = (response.articles as List)
-            .where((article) =>
-                article['title'] != "[Removed]")
+            .where((article) => article['title'] != "[Removed]")
             .map((article) => ArticleModel.fromJson(article))
             .toList();
       } else {

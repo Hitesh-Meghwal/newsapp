@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:newsapp/controllers/home_controller.dart';
 import 'package:newsapp/models/response/article_model.dart';
+import 'package:newsapp/utils/routes/app_Routes.dart';
 import 'package:newsapp/utils/strings/app_strings.dart';
 import 'package:newsapp/views/widgets/custom_appbar.dart';
 import 'package:newsapp/views/widgets/custom_trendingList.dart';
@@ -78,8 +79,16 @@ class _HomeScreenState extends State<HomeScreen> {
                               .textTheme
                               .bodyLarge!
                               .copyWith(fontWeight: FontWeight.bold)),
-                      Text(AppStrings.seeAll,
-                          style: Theme.of(context).textTheme.bodyMedium)
+                      GestureDetector(
+                        onTap: () {
+                          Get.toNamed(AppRoutes.articleListScreen);
+                        },
+                        child: Text(AppStrings.seeAll,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(color: Colors.blue)),
+                      )
                     ],
                   ),
                 ),
@@ -221,11 +230,12 @@ class _HomeScreenState extends State<HomeScreen> {
         child: FutureBuilder(
             future: homeController.getNews(),
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting)
+              if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
                   child: LoadingAnimationWidget.discreteCircle(
                       color: Colors.blue, size: 50),
                 );
+              }
               return ListView.builder(
                 physics: const ClampingScrollPhysics(),
                 itemCount: homeController.articles.length,
