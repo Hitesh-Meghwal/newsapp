@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:newsapp/controllers/home_controller.dart';
 import 'package:newsapp/utils/strings/app_strings.dart';
 import 'package:newsapp/views/widgets/custom_appbar.dart';
+import 'package:newsapp/views/widgets/custom_trendingList.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -28,66 +29,71 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppbar(appbarTitle: AppStrings.news),
-      body: Column(
-        children: [
-          _buildCategoryList(),
-          SizedBox(
-            height: Get.height * 0.04,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(AppStrings.breakingNews,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyLarge!
-                            .copyWith(fontWeight: FontWeight.bold)),
-                    Text(AppStrings.seeAll,
-                        style: Theme.of(context).textTheme.bodyMedium)
-                  ],
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            _buildCategoryList(),
+            SizedBox(
+              height: Get.height * 0.04,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(AppStrings.breakingNews,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(fontWeight: FontWeight.bold)),
+                      Text(AppStrings.seeAll,
+                          style: Theme.of(context).textTheme.bodyMedium)
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: Get.height * 0.02,
-              ),
-              _buildCarouselSlider(),
-              SizedBox(
-                height: Get.height * 0.02,
-              ),
-              _buildIndicator(),
-              SizedBox(
-                height: Get.height * 0.02,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(AppStrings.trendingNews,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyLarge!
-                            .copyWith(fontWeight: FontWeight.bold)),
-                    Text(AppStrings.seeAll,
-                        style: Theme.of(context).textTheme.bodyMedium)
-                  ],
+                SizedBox(
+                  height: Get.height * 0.02,
                 ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: Get.height * 0.02,
-          ),
-        ],
+                _buildCarouselSlider(),
+                SizedBox(
+                  height: Get.height * 0.02,
+                ),
+                _buildIndicator(),
+                SizedBox(
+                  height: Get.height * 0.02,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(AppStrings.trendingNews,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(fontWeight: FontWeight.bold)),
+                      Text(AppStrings.seeAll,
+                          style: Theme.of(context).textTheme.bodyMedium)
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: Get.height * 0.02,
+            ),
+            _buildTrendingList()
+          ],
+        ),
       ),
     );
   }
 
+  // categorylist
   Widget _buildCategoryList() {
     return Container(
       margin: EdgeInsets.only(left: Get.width * 0.04, top: Get.height * 0.02),
@@ -194,6 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  // indicator
   Widget _buildIndicator() {
     return Obx(() {
       return AnimatedSmoothIndicator(
@@ -203,5 +210,18 @@ class _HomeScreenState extends State<HomeScreen> {
             activeDotColor: Colors.blue, dotWidth: 10, dotHeight: 10),
       );
     });
+  }
+
+  Widget _buildTrendingList() {
+    return SizedBox(
+      height: 600, // Set a specific height for the list
+      width: Get.width * 0.95,
+      child: ListView.builder(
+        itemCount: 10,
+        itemBuilder: (context, index) {
+          return CustomTrendinglist();
+        },
+      ),
+    );
   }
 }
