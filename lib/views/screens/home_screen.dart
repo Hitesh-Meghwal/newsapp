@@ -1,9 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:newsapp/controllers/home_controller.dart';
-import 'package:newsapp/models/response/article_model.dart';
 import 'package:newsapp/utils/routes/app_Routes.dart';
 import 'package:newsapp/utils/strings/app_strings.dart';
 import 'package:newsapp/views/widgets/custom_appbar.dart';
@@ -24,7 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     homeController.getCategory();
-    homeController.getSlider();
     super.initState();
   }
 
@@ -53,8 +52,16 @@ class _HomeScreenState extends State<HomeScreen> {
                               .textTheme
                               .bodyLarge!
                               .copyWith(fontWeight: FontWeight.bold)),
-                      Text(AppStrings.seeAll,
-                          style: Theme.of(context).textTheme.bodyMedium)
+                      GestureDetector(
+                        onTap: () {
+                          // Get.toNamed(AppRoutes.breakingNewsScreen);
+                        },
+                        child: Text(AppStrings.seeAll,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(color: Colors.blue)),
+                      )
                     ],
                   ),
                 ),
@@ -125,7 +132,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildCategoryTile(
       BuildContext context, String? categoryName, String? image) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Get.toNamed(AppRoutes.categoryScreen, arguments: {
+          'appbarTitle': categoryName,
+        });
+      },
       child: Container(
         margin: const EdgeInsets.only(right: 16),
         child: Stack(
@@ -165,61 +176,83 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // Carousel slider widget
   Widget _buildCarouselSlider() {
-    return CarouselSlider.builder(
-      itemCount: homeController.sliderList.length,
-      itemBuilder: (context, index, realIndex) {
-        final slider = homeController.sliderList[index];
-        return Stack(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.asset(
-                slider.image.toString(),
-                width: Get.width,
-                height: 250,
-                fit: BoxFit.cover,
-              ),
-            ),
-            Container(
-              width: Get.width,
-              margin: const EdgeInsets.only(top: 130),
-              padding: const EdgeInsets.only(left: 10.0),
-              height: 250,
-              decoration: BoxDecoration(
-                  color: Colors.black45,
-                  borderRadius: BorderRadius.circular(10)),
-              child: Align(
-                alignment: Alignment.center,
-                child: Text(
-                  slider.name.toString(),
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: Colors.white, fontWeight: FontWeight.bold),
-                ),
-              ),
-            )
-          ],
-        );
-      },
-      options: CarouselOptions(
-          autoPlay: true,
-          enlargeCenterPage: true,
-          aspectRatio: 2.0,
-          initialPage: 0,
-          onPageChanged: (index, reason) {
-            homeController.setActiveIndex(index);
-          }),
-    );
+    return FutureBuilder(
+        future: homeController.getBreakingNews(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: LoadingAnimationWidget.discreteCircle(
+                  color: Colors.blue, size: 50),
+            );
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+          return CarouselSlider.builder(
+            itemCount: 5,
+            itemBuilder: (context, index, realIndex) {
+              final slider = homeController.sliderList[index];
+              return Stack(
+                children: [
+                  ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: CachedNetworkImage(
+                        imageUrl: slider.urlToImage.toString(),
+                        width: Get.width,
+                        height: 250,
+                        fit: BoxFit.cover,
+                      )),
+                  Container(
+                    width: Get.width,
+                    margin: const EdgeInsets.only(top: 130),
+                    padding: const EdgeInsets.only(left: 10.0),
+                    height: 250,
+                    decoration: BoxDecoration(
+                        color: Colors.black45,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        slider.title.toString(),
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  )
+                ],
+              );
+            },
+            options: CarouselOptions(
+                autoPlay: true,
+                enlargeCenterPage: true,
+                aspectRatio: 2.0,
+                initialPage: 0,
+                onPageChanged: (index, reason) {
+                  homeController.setActiveIndex(index);
+                }),
+          );
+        });
   }
 
   // indicator
   Widget _buildIndicator() {
     return Obx(() {
-      return AnimatedSmoothIndicator(
-        activeIndex: homeController.activeIndex.value,
-        count: homeController.sliderList.length,
-        effect: const SwapEffect(
-            activeDotColor: Colors.blue, dotWidth: 10, dotHeight: 10),
-      );
+      final activeIndex = homeController.activeIndex.value;
+      final sliderListLength = homeController.sliderList.length;
+
+      // Check for valid values
+      if (sliderListLength > 0 &&
+          activeIndex.isFinite &&
+          activeIndex < sliderListLength) {
+        return AnimatedSmoothIndicator(
+          activeIndex: activeIndex,
+          count: 5,
+          effect: const SwapEffect(
+              activeDotColor: Colors.blue, dotWidth: 10, dotHeight: 10),
+        );
+      } else {
+        return const SizedBox();
+      }
     });
   }
 
@@ -228,13 +261,16 @@ class _HomeScreenState extends State<HomeScreen> {
         height: 600, // Set a specific height for the list
         width: Get.width * 0.95,
         child: FutureBuilder(
-            future: homeController.getNews(),
+            future: homeController.getTrendingNews(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
                   child: LoadingAnimationWidget.discreteCircle(
                       color: Colors.blue, size: 50),
                 );
+              }
+              if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
               }
               return ListView.builder(
                 physics: const ClampingScrollPhysics(),

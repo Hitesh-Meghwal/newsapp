@@ -5,7 +5,7 @@ import 'package:newsapp/res/colors/app_colors.dart';
 import 'package:newsapp/utils/depenencyInjection/depenency_injection.dart';
 import 'package:newsapp/utils/routes/app_Routes.dart';
 
-void main() {
+void main() async {
   // Initialize all dependencies
   DepenencyInjection.init();
   runApp(const MyApp());

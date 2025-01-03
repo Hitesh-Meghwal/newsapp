@@ -16,7 +16,7 @@ class ArticlelistScreen extends StatelessWidget {
     return Scaffold(
       appBar: const CustomAppbar(appbarTitle: AppStrings.trendingNews),
       body: FutureBuilder(
-        future: homeController.getNews(),
+        future: homeController.getTrendingNews(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
