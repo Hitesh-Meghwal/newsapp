@@ -1,7 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:newsapp/controllers/home_controller.dart';
+import 'package:newsapp/models/response/article_model.dart';
 import 'package:newsapp/utils/strings/app_strings.dart';
 import 'package:newsapp/views/widgets/custom_appbar.dart';
 import 'package:newsapp/views/widgets/custom_trendingList.dart';
@@ -214,14 +216,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildTrendingList() {
     return SizedBox(
-      height: 600, // Set a specific height for the list
-      width: Get.width * 0.95,
-      child: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return CustomTrendinglist();
-        },
-      ),
-    );
+        height: 600, // Set a specific height for the list
+        width: Get.width * 0.95,
+        child: FutureBuilder(
+            future: homeController.getNews(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting)
+                return Center(
+                  child: LoadingAnimationWidget.discreteCircle(
+                      color: Colors.blue, size: 50),
+                );
+              return ListView.builder(
+                physics: const ClampingScrollPhysics(),
+                itemCount: homeController.articles.length,
+                itemBuilder: (context, index) {
+                  final article = homeController.articles[index];
+                  return CustomTrendinglist(article: article);
+                },
+              );
+            }));
   }
 }
