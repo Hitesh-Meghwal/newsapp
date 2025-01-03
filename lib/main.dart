@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:newsapp/res/colors/app_colors.dart';
+import 'package:newsapp/utils/depenencyInjection/depenency_injection.dart';
 import 'package:newsapp/utils/routes/app_Routes.dart';
 
 void main() {
+  // Initialize all dependencies
+  DepenencyInjection.init();
   runApp(const MyApp());
   WidgetsFlutterBinding.ensureInitialized();
 }
