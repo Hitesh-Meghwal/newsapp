@@ -23,7 +23,6 @@ class _SpashScreenState extends State<SpashScreen> {
         () {
           // Check login state using GetX's reactive value
           homeController.checkUserEnter();
-          homeController.setUserLogin(true);
         },
       );
     });

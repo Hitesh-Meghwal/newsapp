@@ -44,6 +44,7 @@ class HomeController extends GetxController {
       final response = await _apiservice.get(url: getTrendingNews);
       if (response != null) {
         // Filter and map the articles
+        setUserLogin(true);
         _articles.value = (response.articles as List)
             .where((article) => article['title'] != "[Removed]")
             .map((article) => ArticleModel.fromJson(article))
