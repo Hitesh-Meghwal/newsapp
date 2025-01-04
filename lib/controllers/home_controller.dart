@@ -7,10 +7,13 @@ import 'package:newsapp/models/response/slider_model.dart';
 import 'package:newsapp/services/apiService/api_service.dart';
 import 'package:newsapp/services/data/data.dart';
 import 'package:newsapp/utils/appConstant/app_constant.dart';
+import 'package:newsapp/utils/routes/app_Routes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeController extends GetxController {
   List<CategoryModel> _categories = [];
   final RxInt _activeIndex = 0.obs;
+  final RxBool isLogin = false.obs;
   final RxList<ArticleModel> _articles = RxList<ArticleModel>();
   final RxList<SliderModel> _sliderList = RxList<SliderModel>();
   final RxList<CategoryModel> _categoryList = RxList<CategoryModel>();
@@ -37,7 +40,8 @@ class HomeController extends GetxController {
 
   Future<void> getTrendingNews() async {
     try {
-      final response = await _apiservice.get(url: AppConstant.getTrendingNews);
+      final getTrendingNews = AppConstant.getTrendingNews();
+      final response = await _apiservice.get(url: getTrendingNews);
       if (response != null) {
         // Filter and map the articles
         _articles.value = (response.articles as List)
@@ -87,5 +91,34 @@ class HomeController extends GetxController {
     } catch (e) {
       loggger.e("Error: $e");
     }
+  }
+
+  // Read the isLogin value reactively
+  void checkUserEnter() async {
+    final pref = await SharedPreferences.getInstance();
+    final userLogin = pref.getBool("isLogin") ?? false;
+
+    // Update the reactive state
+    isLogin.value = userLogin;
+
+    // Log the value to debug
+    loggger.i("User login status: ${isLogin.value}");
+
+    // Navigate based on the login status
+    if (isLogin.value) {
+      Get.offAllNamed(AppRoutes.homeScreen);
+    } else {
+      Get.offAllNamed(AppRoutes.landingScreen);
+    }
+  }
+
+  // Store user login status in SharedPreferences
+  Future<void> setUserLogin(bool isLoggedIn) async {
+    final pref = await SharedPreferences.getInstance();
+    pref.setBool("isLogin", isLoggedIn);
+
+    // Update the reactive state
+    isLogin.value = isLoggedIn;
+    loggger.i("User login set to: $isLoggedIn");
   }
 }

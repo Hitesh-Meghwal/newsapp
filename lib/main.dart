@@ -23,7 +23,8 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'News App',
       defaultTransition: Transition.cupertino,
-      themeMode: themeController.isDarkMode.value ? ThemeMode.dark : ThemeMode.light,
+      themeMode:
+          themeController.isDarkMode.value ? ThemeMode.dark : ThemeMode.light,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: AppColors.primaryColor,
@@ -109,7 +110,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       getPages: AppRoutes.routes,
-      initialRoute: AppRoutes.landingScreen,
+      initialRoute: AppRoutes.splashScreen,
       debugShowCheckedModeBanner: false,
     );
   }
