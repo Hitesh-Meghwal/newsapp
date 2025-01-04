@@ -10,6 +10,7 @@ class ArticlelistScreen extends StatelessWidget {
   ArticlelistScreen({super.key});
 
   final HomeController homeController = Get.find();
+  
 
   @override
   Widget build(BuildContext context) {

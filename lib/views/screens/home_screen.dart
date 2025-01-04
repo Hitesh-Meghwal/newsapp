@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:newsapp/controllers/home_controller.dart';
+import 'package:newsapp/services/internetConnectivity/checkInternet_service.dart';
 import 'package:newsapp/utils/routes/app_Routes.dart';
 import 'package:newsapp/utils/strings/app_strings.dart';
 import 'package:newsapp/views/widgets/custom_appbar.dart';
+import 'package:newsapp/views/widgets/custom_toast.dart';
 import 'package:newsapp/views/widgets/custom_trendingList.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -20,11 +22,30 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   // Access the CategoryController via Get.find()
   final HomeController homeController = Get.find();
+  final CheckinternetService _connectivityService = CheckinternetService();
+  bool _isConnected = true;
 
   @override
   void initState() {
     homeController.getCategory();
+    // Listen to connection changes
+    _connectivityService.listenToConnectionChanges((isConnected) {
+      setState(() {
+        _isConnected = isConnected;
+      });
+
+      // Show a snackbar if not connected
+      if (!isConnected) {
+        ToastHelper.showWarning(context, AppStrings.noInternetConnection);
+      }
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _connectivityService.dispose();
+    super.dispose();
   }
 
   @override
@@ -176,82 +197,87 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // Carousel slider widget
   Widget _buildCarouselSlider() {
-    return FutureBuilder(
-        future: homeController.getBreakingNews(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: LoadingAnimationWidget.discreteCircle(
-                  color: Colors.blue, size: 50),
-            );
-          }
-          if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          }
-          return CarouselSlider.builder(
-            itemCount: 5,
-            itemBuilder: (context, index, realIndex) {
-              final slider = homeController.sliderList[index];
-              return GestureDetector(
-                onTap: () {
-                  if (slider.url != null && slider.url!.isNotEmpty) {
-                    Get.toNamed(AppRoutes.articleScreen,
-                        arguments: {'url': slider.url});
-                  } else {
-                    Get.snackbar(
-                      "Invalid Link",
-                      "This link is unavailable.",
-                      snackPosition: SnackPosition.BOTTOM,
-                      backgroundColor: Colors.red.withOpacity(0.8),
-                      colorText: Colors.white,
-                    );
-                  }
-                },
-                child: Stack(
-                  children: [
-                    ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: CachedNetworkImage(
-                          imageUrl: slider.urlToImage.toString(),
+    return _isConnected
+        ? FutureBuilder(
+            future: homeController.getBreakingNews(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: LoadingAnimationWidget.discreteCircle(
+                      color: Colors.blue, size: 50),
+                );
+              }
+              if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              }
+              return CarouselSlider.builder(
+                itemCount: 5,
+                itemBuilder: (context, index, realIndex) {
+                  final slider = homeController.sliderList[index];
+                  return GestureDetector(
+                    onTap: () {
+                      if (slider.url != null && slider.url!.isNotEmpty) {
+                        Get.toNamed(AppRoutes.articleScreen,
+                            arguments: {'url': slider.url});
+                      } else {
+                        Get.snackbar(
+                          "Invalid Link",
+                          "This link is unavailable.",
+                          snackPosition: SnackPosition.BOTTOM,
+                          backgroundColor: Colors.red.withOpacity(0.8),
+                          colorText: Colors.white,
+                        );
+                      }
+                    },
+                    child: Stack(
+                      children: [
+                        ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: CachedNetworkImage(
+                              imageUrl: slider.urlToImage.toString(),
+                              width: Get.width,
+                              height: 250,
+                              fit: BoxFit.cover,
+                            )),
+                        Container(
                           width: Get.width,
+                          margin: const EdgeInsets.only(top: 130),
+                          padding: const EdgeInsets.only(left: 10.0),
                           height: 250,
-                          fit: BoxFit.cover,
-                        )),
-                    Container(
-                      width: Get.width,
-                      margin: const EdgeInsets.only(top: 130),
-                      padding: const EdgeInsets.only(left: 10.0),
-                      height: 250,
-                      decoration: BoxDecoration(
-                          color: Colors.black45,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          slider.title.toString(),
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+                          decoration: BoxDecoration(
+                              color: Colors.black45,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              slider.title.toString(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                },
+                options: CarouselOptions(
+                    autoPlay: true,
+                    enlargeCenterPage: true,
+                    aspectRatio: 2.0,
+                    initialPage: 0,
+                    onPageChanged: (index, reason) {
+                      homeController.setActiveIndex(index);
+                    }),
               );
-            },
-            options: CarouselOptions(
-                autoPlay: true,
-                enlargeCenterPage: true,
-                aspectRatio: 2.0,
-                initialPage: 0,
-                onPageChanged: (index, reason) {
-                  homeController.setActiveIndex(index);
-                }),
+            })
+        : Text(
+            AppStrings.noInternetConnection,
+            style: Theme.of(context).textTheme.bodyLarge,
           );
-        });
   }
 
   // indicator
@@ -280,26 +306,33 @@ class _HomeScreenState extends State<HomeScreen> {
     return SizedBox(
         height: 600, // Set a specific height for the list
         width: Get.width * 0.95,
-        child: FutureBuilder(
-            future: homeController.getTrendingNews(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: LoadingAnimationWidget.discreteCircle(
-                      color: Colors.blue, size: 50),
-                );
-              }
-              if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              }
-              return ListView.builder(
-                physics: const ClampingScrollPhysics(),
-                itemCount: homeController.articles.length,
-                itemBuilder: (context, index) {
-                  final article = homeController.articles[index];
-                  return CustomTrendinglist(article: article);
-                },
-              );
-            }));
+        child: _isConnected
+            ? FutureBuilder(
+                future: homeController.getTrendingNews(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: LoadingAnimationWidget.discreteCircle(
+                          color: Colors.blue, size: 50),
+                    );
+                  }
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  }
+                  return ListView.builder(
+                    physics: const ClampingScrollPhysics(),
+                    itemCount: homeController.articles.length,
+                    itemBuilder: (context, index) {
+                      final article = homeController.articles[index];
+                      return CustomTrendinglist(article: article);
+                    },
+                  );
+                })
+            : Center(
+                child: Text(
+                  AppStrings.noInternetConnection,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ));
   }
 }

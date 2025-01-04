@@ -21,7 +21,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppbar(appbarTitle: appbarTitle ?? "Category",mode: false),
+      appBar: CustomAppbar(appbarTitle: appbarTitle ?? "Category", mode: false),
       body: FutureBuilder(
         future: homeController.getCategoryNews(appbarTitle),
         builder: (context, snapshot) {
@@ -33,11 +33,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
               ),
             );
           }
+
           if (snapshot.hasError) {
             return Center(
               child: Text(
                 'Error: ${snapshot.error}',
-                style: TextStyle(color: Colors.red),
+                style: const TextStyle(color: Colors.red),
               ),
             );
           }
