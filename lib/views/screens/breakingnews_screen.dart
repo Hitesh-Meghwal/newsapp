@@ -14,7 +14,7 @@ class BreakingnewsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppbar(appbarTitle: AppStrings.breakingNews),
+      appBar: CustomAppbar(appbarTitle: AppStrings.breakingNews,mode: false),
       body: FutureBuilder(
         future: homeController.getBreakingNews(),
         builder: (context, snapshot) {

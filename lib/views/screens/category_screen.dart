@@ -21,7 +21,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppbar(appbarTitle: appbarTitle ?? "Category"),
+      appBar: CustomAppbar(appbarTitle: appbarTitle ?? "Category",mode: false),
       body: FutureBuilder(
         future: homeController.getCategoryNews(appbarTitle),
         builder: (context, snapshot) {

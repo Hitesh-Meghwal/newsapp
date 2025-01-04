@@ -14,7 +14,7 @@ class ArticlelistScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppbar(appbarTitle: AppStrings.trendingNews),
+      appBar: CustomAppbar(appbarTitle: AppStrings.trendingNews,mode: false),
       body: FutureBuilder(
         future: homeController.getTrendingNews(),
         builder: (context, snapshot) {
