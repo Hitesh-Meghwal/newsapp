@@ -120,7 +120,7 @@ This is a Flutter-based news app that fetches and displays trending and breaking
 - Flutter SVG enables the use of Scalable Vector Graphics (SVG) images in your Flutter app, providing high-quality vector images that scale well on all screen sizes.
 
 **connectivity_plus: ^6.1.1**
-Connectivity Plus provides a way to check the device's network status and connectivity, ensuring that the app can react to connectivity changes (e.g., switching from Wi-Fi to mobile data).
+- Connectivity Plus provides a way to check the device's network status and connectivity, ensuring that the app can react to connectivity changes (e.g., switching from Wi-Fi to mobile data).
 
 **toastification: ^2.3.0**
 - Toastification is a package that allows for showing customizable toast messages, providing a simple way to display notifications to users without disrupting the app’s flow.
