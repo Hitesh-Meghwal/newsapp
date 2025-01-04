@@ -135,18 +135,15 @@ Connectivity Plus provides a way to check the device's network status and connec
 
 Below are some screenshots of the app:
 
-<div align="center">
-
 | Onboarding Screen                          | Home Screen                             |
 |--------------------------------------------|-----------------------------------------|
-| <img src="assets/screenshots/1.jpg" width="40%" height="40%"> | <img src="assets/screenshots/2.jpg" width="40%" height="40%"> |
+| <div align="center"><img src="assets/screenshots/1.jpg" width="40%" height="40%"></div> | <div align="center"><img src="assets/screenshots/2.jpg" width="40%" height="40%"></div> |
 
 | Article Screen                             | Breaking News Screen                    |
 |--------------------------------------------|-----------------------------------------|
-| <img src="assets/screenshots/3.jpg" width="40%" height="40%"> | <img src="assets/screenshots/4.jpg" width="40%" height="40%"> |
+| <div align="center"><img src="assets/screenshots/3.jpg" width="40%" height="40%"></div> | <div align="center"><img src="assets/screenshots/4.jpg" width="40%" height="40%"></div> |
 
 | Home Screen (Dark Mode)                    | New Feature Screen                      |
 |--------------------------------------------|-----------------------------------------|
-| <img src="assets/screenshots/5.jpg" width="40%" height="40%"> | <img src="assets/screenshots/6.jpg" width="40%" height="40%"> |
+| <div align="center"><img src="assets/screenshots/5.jpg" width="40%" height="40%"></div> | <div align="center"><img src="assets/screenshots/6.jpg" width="40%" height="40%"></div> |
 
-</div>
