@@ -8,14 +8,14 @@ class AppConstant {
   // Base URL for trending news with a dynamically calculated date
   static String getTrendingNews() {
     final formattedDate = getFormattedDate();
-    return "https://newsapi.org/v2/everything?q=tesla&from=$formattedDate&sortBy=publishedAt&apiKey=9e81396202ec4df08b5c88d4467ab205";
+    return "https://newsapi.org/v2/everything?q=tesla&from=$formattedDate&sortBy=publishedAt&apiKey=bce6923a79b64f8db20607d7711449fd";
   }
 
   static const String getBreakingNews =
-      "https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=9e81396202ec4df08b5c88d4467ab205";
+      "https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=bce6923a79b64f8db20607d7711449fd";
 
 // This method builds the URL dynamically based on the category name
   static String getCategoryNews(String categoryName) {
-    return "https://newsapi.org/v2/top-headlines?country=us&category=$categoryName&apiKey=9e81396202ec4df08b5c88d4467ab205";
+    return "https://newsapi.org/v2/top-headlines?country=us&category=$categoryName&apiKey=bce6923a79b64f8db20607d7711449fd";
   }
 }
