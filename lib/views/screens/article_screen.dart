@@ -42,7 +42,7 @@ class _ArticleScreenState extends State<ArticleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppbar(appbarTitle: AppStrings.news),
+      appBar: CustomAppbar(appbarTitle: AppStrings.news),
       body: Column(
         children: [
           if (isLoading)

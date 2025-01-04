@@ -2,19 +2,38 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newsapp/models/response/article_model.dart';
+import 'package:newsapp/models/response/slider_model.dart';
 import 'package:newsapp/res/colors/app_colors.dart';
 import 'package:newsapp/res/images/app_images.dart';
 import 'package:newsapp/utils/routes/app_Routes.dart';
 
 class CustomTrendinglist extends StatelessWidget {
-  ArticleModel? article;
-  CustomTrendinglist({super.key, this.article});
+  final ArticleModel? article;
+  final SliderModel? slider;
+
+  CustomTrendinglist({super.key, this.article, this.slider});
 
   @override
   Widget build(BuildContext context) {
+    // Determine the content source
+    final String? imageUrl = article?.urlToImage ?? slider?.urlToImage;
+    final String? title = article?.title ?? slider?.title;
+    final String? description = article?.decsription ?? slider?.decsription;
+    final String? url = article?.url ?? slider?.url;
+
     return GestureDetector(
       onTap: () {
-        Get.toNamed(AppRoutes.articleScreen, arguments: {'url': article!.url});
+        if (url != null && url.isNotEmpty) {
+          Get.toNamed(AppRoutes.articleScreen, arguments: {'url': url});
+        } else {
+          Get.snackbar(
+            "Invalid Link",
+            "This link is unavailable.",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red.withOpacity(0.8),
+            colorText: Colors.white,
+          );
+        }
       },
       child: Padding(
         padding: const EdgeInsets.only(bottom: 8.0),
@@ -26,12 +45,21 @@ class CustomTrendinglist extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: article!.urlToImage != null
+                child: imageUrl != null && imageUrl.isNotEmpty
                     ? CachedNetworkImage(
-                        imageUrl: article!.urlToImage ?? AppImages.general,
+                        imageUrl: imageUrl,
                         width: 120,
                         height: 120,
                         fit: BoxFit.cover,
+                        placeholder: (context, url) => const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        errorWidget: (context, url, error) => Image.asset(
+                          AppImages.general,
+                          width: 120,
+                          height: 120,
+                          fit: BoxFit.cover,
+                        ),
                       )
                     : Image.asset(
                         AppImages.general,
@@ -41,27 +69,36 @@ class CustomTrendinglist extends StatelessWidget {
                       ),
               ),
               const SizedBox(width: 8.0),
-              Column(
-                children: [
-                  SizedBox(
-                    width: Get.width / 1.7,
-                    child: Text(article!.title.toString(),
-                        style: Theme.of(context).textTheme.bodyLarge,
-                        maxLines: 2),
-                  ),
-                  SizedBox(
-                    width: Get.width / 1.7,
-                    child: Text(
-                      article!.decsription.toString(),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title ?? "No Title Available",
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            color: Theme.of(context).brightness ==
+                                    Brightness.dark
+                                ? AppColors
+                                    .secondaryColor // Slightly muted white for dark mode
+                                : AppColors
+                                    .secondaryColor, // Grey color for light mode
+                          ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4.0),
+                    Text(
+                      description ?? "No description available.",
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium!
                           .copyWith(color: Colors.grey),
                       maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  )
-                ],
-              )
+                  ],
+                ),
+              ),
             ],
           ),
         ),

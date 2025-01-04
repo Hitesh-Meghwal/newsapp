@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppbar(appbarTitle: AppStrings.news),
+      appBar: CustomAppbar(appbarTitle: AppStrings.news),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(
@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               .copyWith(fontWeight: FontWeight.bold)),
                       GestureDetector(
                         onTap: () {
-                          // Get.toNamed(AppRoutes.breakingNewsScreen);
+                          Get.toNamed(AppRoutes.breakingNewsScreen);
                         },
                         child: Text(AppStrings.seeAll,
                             style: Theme.of(context)
@@ -192,34 +192,54 @@ class _HomeScreenState extends State<HomeScreen> {
             itemCount: 5,
             itemBuilder: (context, index, realIndex) {
               final slider = homeController.sliderList[index];
-              return Stack(
-                children: [
-                  ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: CachedNetworkImage(
-                        imageUrl: slider.urlToImage.toString(),
-                        width: Get.width,
-                        height: 250,
-                        fit: BoxFit.cover,
-                      )),
-                  Container(
-                    width: Get.width,
-                    margin: const EdgeInsets.only(top: 130),
-                    padding: const EdgeInsets.only(left: 10.0),
-                    height: 250,
-                    decoration: BoxDecoration(
-                        color: Colors.black45,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        slider.title.toString(),
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            color: Colors.white, fontWeight: FontWeight.bold),
+              return GestureDetector(
+                onTap: () {
+                  if (slider.url != null && slider.url!.isNotEmpty) {
+                    Get.toNamed(AppRoutes.articleScreen,
+                        arguments: {'url': slider.url});
+                  } else {
+                    Get.snackbar(
+                      "Invalid Link",
+                      "This link is unavailable.",
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Colors.red.withOpacity(0.8),
+                      colorText: Colors.white,
+                    );
+                  }
+                },
+                child: Stack(
+                  children: [
+                    ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: CachedNetworkImage(
+                          imageUrl: slider.urlToImage.toString(),
+                          width: Get.width,
+                          height: 250,
+                          fit: BoxFit.cover,
+                        )),
+                    Container(
+                      width: Get.width,
+                      margin: const EdgeInsets.only(top: 130),
+                      padding: const EdgeInsets.only(left: 10.0),
+                      height: 250,
+                      decoration: BoxDecoration(
+                          color: Colors.black45,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          slider.title.toString(),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                        ),
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               );
             },
             options: CarouselOptions(

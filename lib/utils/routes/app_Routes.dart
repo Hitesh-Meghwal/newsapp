@@ -22,7 +22,7 @@ class AppRoutes {
     GetPage(name: landingScreen, page: () => const LandingScreen()),
     GetPage(name: articleScreen, page: () => const ArticleScreen()),
     GetPage(name: articleListScreen, page: () => ArticlelistScreen()),
-    // GetPage(name: breakingNewsScreen, page: () => BreakingnewsScreen()),
-    GetPage(name: categoryScreen, page: () => CategoryScreen())
+    GetPage(name: breakingNewsScreen, page: () => BreakingnewsScreen()),
+    GetPage(name: categoryScreen, page: () => const CategoryScreen())
   ];
 }
