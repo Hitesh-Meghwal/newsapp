@@ -15,6 +15,9 @@ This is a Flutter-based news app that fetches and displays trending and breaking
 - **NewsAPI**: To fetch news data, you need an API key from [NewsAPI](https://newsapi.org/).
 - **Android Studio / Visual Studio Code**: For development and running the application.
 
+## Download APK
+- You can view the app by following the link below: [News App](https://drive.google.com/file/d/17PawtD-WZ9gxHEhNhNwAc4wpkxO9xIV6/view?usp=sharing)
+
 ## Setup Instructions
 
 1. **Clone the Repository**  
@@ -127,3 +130,19 @@ Connectivity Plus provides a way to check the device's network status and connec
 
 **cupertino_icons: ^1.0.8**
 - This package provides iOS-style icons for Flutter applications, enabling a consistent design language that aligns with iOS platform guidelines.
+
+## Screenshots
+
+Below are some screenshots of the app:
+
+| Onboarding Screen                          | Home Screen                             |
+|--------------------------------------------|-----------------------------------------|
+| <img src="assets/screenshots/1.jpg" width="40%" height="40%"> | <img src="assets/screenshots/2.jpg" width="40%" height="40%"> |
+
+| Article Screen                             | Breaking News Screen                    |
+|--------------------------------------------|-----------------------------------------|
+| <img src="assets/screenshots/3.jpg" width="40%" height="40%"> | <img src="assets/screenshots/4.jpg" width="40%" height="40%"> |
+
+| Home Screen (Dark Mode)                    | Category Screen                      |
+|--------------------------------------------|-----------------------------------------|
+| <img src="assets/screenshots/5.jpg" width="40%" height="40%"> | <img src="assets/screenshots/6.jpg" width="40%" height="40%"> |
