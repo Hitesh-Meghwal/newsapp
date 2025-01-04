@@ -143,7 +143,7 @@ Below are some screenshots of the app:
 |--------------------------------------------|-----------------------------------------|
 | <div align="center"><img src="assets/screenshots/3.jpg" width="40%" height="40%"></div> | <div align="center"><img src="assets/screenshots/4.jpg" width="40%" height="40%"></div> |
 
-| Home Screen (Dark Mode)                    | New Feature Screen                      |
+| Home Screen (Dark Mode)                    | Category Screen                      |
 |--------------------------------------------|-----------------------------------------|
 | <div align="center"><img src="assets/screenshots/5.jpg" width="40%" height="40%"></div> | <div align="center"><img src="assets/screenshots/6.jpg" width="40%" height="40%"></div> |
 
