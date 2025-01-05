@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:get/get.dart';
 import 'package:newsapp/views/screens/articleList_screen.dart';
 import 'package:newsapp/views/screens/article_screen.dart';
