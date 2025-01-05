@@ -2,24 +2,22 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newsapp/models/response/article_model.dart';
-import 'package:newsapp/models/response/slider_model.dart';
 import 'package:newsapp/res/colors/app_colors.dart';
 import 'package:newsapp/res/images/app_images.dart';
 import 'package:newsapp/utils/routes/app_Routes.dart';
 
 class CustomTrendinglist extends StatelessWidget {
   final ArticleModel? article;
-  final SliderModel? slider;
 
-  CustomTrendinglist({super.key, this.article, this.slider});
+  const CustomTrendinglist({super.key, this.article});
 
   @override
   Widget build(BuildContext context) {
     // Determine the content source
-    final String? imageUrl = article?.urlToImage ?? slider?.urlToImage;
-    final String? title = article?.title ?? slider?.title;
-    final String? description = article?.decsription ?? slider?.decsription;
-    final String? url = article?.url ?? slider?.url;
+    final String? imageUrl = article?.urlToImage ;
+    final String? title = article?.title;
+    final String? description = article?.decsription;
+    final String? url = article?.url;
 
     return GestureDetector(
       onTap: () {

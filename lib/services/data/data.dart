@@ -1,5 +1,4 @@
 import 'package:newsapp/models/category_model.dart';
-import 'package:newsapp/models/response/slider_model.dart';
 import 'package:newsapp/res/images/app_images.dart';
 import 'package:newsapp/utils/strings/app_strings.dart';
 

@@ -68,7 +68,7 @@ class _BreakingnewsScreenState extends State<BreakingnewsScreen> {
                     final slider = homeController.sliderList[index];
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                      child: CustomTrendinglist(slider: slider),
+                      child: CustomTrendinglist(article: slider),
                     );
                   },
                 );

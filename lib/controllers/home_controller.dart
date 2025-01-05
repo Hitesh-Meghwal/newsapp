@@ -2,8 +2,6 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:newsapp/models/category_model.dart';
 import 'package:newsapp/models/response/article_model.dart';
-import 'package:newsapp/models/response/show_category.dart';
-import 'package:newsapp/models/response/slider_model.dart';
 import 'package:newsapp/services/apiService/api_service.dart';
 import 'package:newsapp/services/data/data.dart';
 import 'package:newsapp/utils/appConstant/app_constant.dart';
@@ -15,17 +13,17 @@ class HomeController extends GetxController {
   final RxInt _activeIndex = 0.obs;
   final RxBool isLogin = false.obs;
   final RxList<ArticleModel> _articles = RxList<ArticleModel>();
-  final RxList<SliderModel> _sliderList = RxList<SliderModel>();
+  final RxList<ArticleModel> _sliderList = RxList<ArticleModel>();
   final RxList<CategoryModel> _categoryList = RxList<CategoryModel>();
-  final RxList<ShowCategory> _showCategory = RxList<ShowCategory>();
+  final RxList<ArticleModel> _showCategory = RxList<ArticleModel>();
 
   List<CategoryModel> get categories => _categories;
 
   RxInt get activeIndex => _activeIndex;
   RxList<ArticleModel> get articles => _articles;
-  RxList<SliderModel> get sliderList => _sliderList;
+  RxList<ArticleModel> get sliderList => _sliderList;
   RxList<CategoryModel> get categoryList => _categoryList;
-  RxList<ShowCategory> get showCategory => _showCategory;
+  RxList<ArticleModel> get showCategory => _showCategory;
 
   final Apiservice _apiservice = Apiservice();
   final loggger = Logger();
@@ -64,7 +62,7 @@ class HomeController extends GetxController {
         // Filter and map the articles
         _sliderList.value = (response.articles as List)
             .where((article) => article['title'] != "[Removed]")
-            .map((article) => SliderModel.fromJson(article))
+            .map((article) => ArticleModel.fromJson(article))
             .toList();
       } else {
         loggger.e("Failed to fetch news");
@@ -84,7 +82,7 @@ class HomeController extends GetxController {
         // Filter and map the articles
         _showCategory.value = (response.articles as List)
             .where((article) => article['title'] != "[Removed]")
-            .map((article) => ShowCategory.fromJson(article))
+            .map((article) => ArticleModel.fromJson(article))
             .toList();
       } else {
         loggger.e("Failed to fetch news");
