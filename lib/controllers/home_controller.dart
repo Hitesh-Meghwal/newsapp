@@ -12,6 +12,7 @@ class HomeController extends GetxController {
   List<CategoryModel> _categories = [];
   final RxInt _activeIndex = 0.obs;
   final RxBool isLogin = false.obs;
+  final RxString _errorMsg = "".obs;
   final RxList<ArticleModel> _articles = RxList<ArticleModel>();
   final RxList<ArticleModel> _sliderList = RxList<ArticleModel>();
   final RxList<CategoryModel> _categoryList = RxList<CategoryModel>();
@@ -20,6 +21,7 @@ class HomeController extends GetxController {
   List<CategoryModel> get categories => _categories;
 
   RxInt get activeIndex => _activeIndex;
+  RxString get errorMsg => _errorMsg;
   RxList<ArticleModel> get articles => _articles;
   RxList<ArticleModel> get sliderList => _sliderList;
   RxList<CategoryModel> get categoryList => _categoryList;
@@ -48,6 +50,7 @@ class HomeController extends GetxController {
             .map((article) => ArticleModel.fromJson(article))
             .toList();
       } else {
+        _errorMsg.value = "Failed to fetch news";
         loggger.e("Failed to fetch news");
       }
     } catch (e) {
@@ -65,6 +68,7 @@ class HomeController extends GetxController {
             .map((article) => ArticleModel.fromJson(article))
             .toList();
       } else {
+        _errorMsg.value = "Failed to fetch news";
         loggger.e("Failed to fetch news");
       }
     } catch (e) {
@@ -85,6 +89,7 @@ class HomeController extends GetxController {
             .map((article) => ArticleModel.fromJson(article))
             .toList();
       } else {
+        _errorMsg.value = "Failed to fetch news";
         loggger.e("Failed to fetch news");
       }
     } catch (e) {

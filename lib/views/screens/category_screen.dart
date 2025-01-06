@@ -37,7 +37,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
           if (snapshot.hasError) {
             return Center(
               child: Text(
-                'Error: ${snapshot.error}',
+                'Error: ${homeController.errorMsg.value}',
                 style: const TextStyle(color: Colors.red),
               ),
             );

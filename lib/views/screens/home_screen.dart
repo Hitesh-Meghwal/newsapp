@@ -208,7 +208,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               }
               if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
+                return Center(child: Text('Error: ${homeController.errorMsg.value}'));
               }
               return CarouselSlider.builder(
                 itemCount: 5,
@@ -317,7 +317,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   }
                   if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
+                    return Center(child: Text('Error: ${homeController.errorMsg.value}'));
                   }
                   return ListView.builder(
                     physics: const ClampingScrollPhysics(),

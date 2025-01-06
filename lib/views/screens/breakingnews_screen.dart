@@ -60,7 +60,7 @@ class _BreakingnewsScreenState extends State<BreakingnewsScreen> {
                   );
                 }
                 if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
+                  return Center(child: Text('Error: ${homeController.errorMsg.value}'));
                 }
                 return ListView.builder(
                   itemCount: homeController.sliderList.length,

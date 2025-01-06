@@ -28,7 +28,7 @@ class ArticlelistScreen extends StatelessWidget {
             );
           }
           if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(child: Text('Error: ${homeController.errorMsg.value}'));
           }
           return ListView.builder(
             itemCount: homeController.articles.length,
