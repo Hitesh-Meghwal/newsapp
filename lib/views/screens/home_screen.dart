@@ -20,7 +20,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // Access the CategoryController via Get.find()
+  // Access the CategoryController
   final HomeController homeController = Get.find();
   final CheckinternetService _connectivityService = CheckinternetService();
   bool _isConnected = true;
